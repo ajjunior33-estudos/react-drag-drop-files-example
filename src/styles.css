@@ -1,0 +1,52 @@
+ul {
+  list-style: none;
+}
+li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: rgba(149, 165, 166, 1);
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+  color: #fff;
+  font-family: "Courier New", Courier, monospace;
+}
+
+li div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.preview {
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+  margin-right: 10px;
+}
+.fileInfo {
+  display: flex;
+  align-items: center;
+}
+
+.fileInfo div {
+  display: flex;
+  flex-direction: column;
+}
+.fileInfo div span {
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+.fileInfo div span button {
+  border: 0;
+  background-color: transparent;
+  color: #e57878;
+  margin-left: 5px;
+  cursor: pointer;
+}
