@@ -13,8 +13,6 @@ export default function App() {
   const [files, setFiles] = useState([]);
 
   const handleChange = (file) => {
-    console.log(file[0]);
-
     const objectFile = {
       id: uniqueId(),
       name: file[0].name,
@@ -41,7 +39,6 @@ export default function App() {
     (uploadFile) => {
       const data = new FormData();
       data.append("file", uploadFile.file, uploadFile.name);
-      console.log(data);
 
       api
         .post("/upload", data, {
@@ -50,20 +47,10 @@ export default function App() {
               (progressEvent.loaded * 100) / progressEvent.total
             );
 
-            console.log(
-              `A imagem ${uploadFile.name} está ${progress}% carregada... `
-            );
-
             updateFile(uploadFile.id, { progress });
           },
         })
         .then((response) => {
-          console.log(
-            `A imagem ${uploadFile.name} já foi enviada para o servidor!`
-          );
-
-          console.log(response.data.url);
-
           updateFile(uploadFile.id, {
             uploaded: true,
             id: response.data._id,
@@ -71,11 +58,6 @@ export default function App() {
           });
         })
         .catch((err) => {
-          console.error(
-            `Houve um problema ao fazer upload da imagem ${uploadFile.name} no servidor AWS`
-          );
-          console.log(err);
-
           updateFile(uploadFile.id, {
             error: true,
           });
