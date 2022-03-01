@@ -1,7 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { CircularProgressbar } from "react-circular-progressbar";
+import React, { useState, useCallback } from "react";
 import { FileUploader } from "react-drag-drop-files";
-import { MdCheckCircle, MdError, MdLink } from "react-icons/md";
 import filesize from "filesize";
 import { uniqueId } from "lodash";
 
@@ -11,6 +9,7 @@ import "./styles.css";
 import UploadComponent from "./components/UploadComponent";
 
 import api from "./services/api";
+import FilesListComponent from "./components/FilesList";
 
 const filesTypes = ["JPG", "PNG", "GIF"];
 
@@ -93,7 +92,8 @@ export default function App() {
     [updateFile]
   );
 
-  const handleDelete = useCallback((id) => {
+  const handleDelete = useCallback(async (id) => {
+    await api.delete(`/upload/${id}`);
     setFiles((state) => state.filter((file) => file.id !== id));
   }, []);
 
@@ -124,57 +124,7 @@ export default function App() {
       <br />
       <hr />
       <br />
-      <ul>
-        {files.map((element) => {
-          return (
-            <li key={element.id}>
-              <div className="fileInfo">
-                <div
-                  style={{ backgroundImage: `url(${element.preview})` }}
-                  className="preview"
-                ></div>
-                <div>
-                  <strong>{element.name}</strong>
-                  <span>
-                    {element.readableSize}
-                    {element.url && (
-                      <button onClick={() => handleDelete(element.id)}>
-                        Excluir
-                      </button>
-                    )}
-                  </span>
-                </div>
-              </div>
-              <div>
-                {!element.uploaded && !element.error && (
-                  <CircularProgressbar
-                    styles={{
-                      root: { width: 24 },
-                      path: { stroke: "#7159c1" },
-                    }}
-                    strokeWidth={10}
-                    value={element.progress}
-                  />
-                )}
-
-                {element.url && (
-                  <a
-                    href={element.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <MdLink style={{ marginRight: 8 }} size={24} color="#222" />
-                  </a>
-                )}
-                {element.uploaded && (
-                  <MdCheckCircle size={24} color="#78e5d5" />
-                )}
-                {element.error && <MdError size={24} color="#e57878" />}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+      <FilesListComponent files={files} handleDelete={handleDelete} />
     </div>
   );
 }
