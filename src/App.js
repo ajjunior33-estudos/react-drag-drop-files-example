@@ -1,25 +1,17 @@
 import React, { useState, useCallback } from "react";
-import { FileUploader } from "react-drag-drop-files";
 import filesize from "filesize";
 import { uniqueId } from "lodash";
 
 import "react-circular-progressbar/dist/styles.css";
 import "./styles.css";
 
-import UploadComponent from "./components/UploadComponent";
-
 import api from "./services/api";
 import FilesListComponent from "./components/FilesList";
-
-const filesTypes = ["JPG", "PNG", "GIF"];
+import DragDropComponent from "./components/DragDropComponent";
 
 export default function App() {
   const [files, setFiles] = useState([]);
 
-  const [status, setStatus] = useState("normal");
-  const [messageState, setMessageState] = useState(
-    "Adicione seus arquivos aqui ..."
-  );
   const handleChange = (file) => {
     console.log(file[0]);
 
@@ -99,28 +91,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <FileUploader
-        handleChange={handleChange}
-        name="file"
-        hoverTitle={""}
-        types={filesTypes}
-        multiple={true}
-        onTypeError={(err) => {
-          setStatus("danger");
-          setMessageState("Tipo de arquivo não suportado.");
-        }}
-        onDraggingStateChange={(drag) => {
-          if (drag === true) {
-            setStatus("success");
-            setMessageState("Solte seus arquivos.");
-          } else {
-            setStatus("normal");
-            setMessageState("Adicione seus arquivos aqui ...");
-          }
-        }}
-      >
-        <UploadComponent message={messageState} status={status} />
-      </FileUploader>
+      <DragDropComponent handleChange={handleChange} />
       <br />
       <hr />
       <br />
